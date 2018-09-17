@@ -1,4 +1,5 @@
 from pico2d import *
+from math import sin, cos
 
 open_canvas()
 
@@ -7,49 +8,78 @@ character = load_image('run_animation.png')
 
 frame = 0
 
-x=0
-y=90
+x=400
+y=315
+rad=225
+angle=-70
+nowx=400
+nowy=90
 
 while(1):
-    while(x<800):
+    while(nowx<800):
         clear_canvas()
         grass.draw(400,30)
-        character.clip_draw(frame*100,0,100,100,x,y)
+        character.clip_draw(frame*100,0,100,100,nowx,nowy)
         frame=(frame+1)%8
         update_canvas()
-        x=x+2
-        delay(0.05)
+        nowx=nowx+2
+        delay(0.01)
+        get_events()
+        
+    while(nowy<600):
+        clear_canvas()
+        grass.draw(400,30)
+        character.clip_draw(frame*100,0,100,100,nowx,nowy)
+        frame=(frame+1)%8
+        update_canvas()
+        nowy=nowy+2
+        delay(0.01)
         get_events()
 
-    while(y<600):
+    while(nowx>0):
         clear_canvas()
         grass.draw(400,30)
-        character.clip_draw(frame*100,0,100,100,x,y)
+        character.clip_draw(frame*100,0,100,100,nowx,nowy)
         frame=(frame+1)%8
         update_canvas()
-        y=y+2
-        delay(0.05)
+        nowx=nowx-2
+        delay(0.01)
         get_events()
 
-    while(x>0):
+    while(nowy>90):
         clear_canvas()
         grass.draw(400,30)
-        character.clip_draw(frame*100,0,100,100,x,y)
+        character.clip_draw(frame*100,0,100,100,nowx,nowy)
         frame=(frame+1)%8
         update_canvas()
-        x=x-2
-        delay(0.05)
+        nowy=nowy-2
+        delay(0.01)
         get_events()
 
-    while(y>90):
+    while(nowx<400):
         clear_canvas()
         grass.draw(400,30)
-        character.clip_draw(frame*100,0,100,100,x,y)
+        character.clip_draw(frame*100,0,100,100,nowx,nowy)
         frame=(frame+1)%8
         update_canvas()
-        y=y-2
-        delay(0.05)
+        nowx=nowx+2
+        delay(0.01)
         get_events()
+
+   
+    while(angle<220):
+        clear_canvas()
+        grass.draw(400,30)
+        character.clip_draw(frame*100,0,100,100,nowx,nowy)
+        frame=(frame+1)%8
+        update_canvas()
+        nowx=cos(angle/45)*rad+x
+        nowy=sin(angle/45)*rad+y
+        angle=angle+1
+        delay(0.01)
+        get_events()
+    angle=-70
     
 close_canvas()
+
                        
