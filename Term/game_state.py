@@ -38,7 +38,11 @@ def update():
     pass
 
 def exit():
-    close_canvas()
+    pass
 
-#if __name__=='__main__':
-#    main()
+if __name__=='__main__':
+     import sys 
+     current_module = sys.modules[__name__]   
+     open_canvas() 
+     game_framework.run(current_module) 
+     close_canvas() 
