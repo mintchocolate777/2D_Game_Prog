@@ -11,20 +11,23 @@ class Grass:
         self.image.draw(400,30)
 
 class Boy:
+    image=None
     def __init__(self):
         print("Creating..")
         self.x,self.y=random.randint(0,200),random.randint(90,550)
         self.speed=random.uniform(1.0,3.0)
         self.frame=random.randint(0,7)
         self.waypoints=[]
-        self.image=load_image('animation_sheet.png')
         self.wp=load_image('wp.png')
         self.state=3
+        if Boy.image==None:
+            Boy.image=load_image('animation_sheet.png')
+
 
     def draw(self):
         for wp in self.waypoints:
             self.wp.draw(wp[0],wp[1])
-        self.image.clip_draw(self.frame*100,self.state*100,100,100,self.x,self.y)
+        Boy.image.clip_draw(self.frame*100,self.state*100,100,100,self.x,self.y)
 
     def update(self):
         self.frame = (self.frame+1)%8
@@ -72,7 +75,6 @@ def handle_events():
 
 def enter():
     global boys, grass
-
     boys=[Boy() for i in range(1000)]
     grass=Grass()
 
