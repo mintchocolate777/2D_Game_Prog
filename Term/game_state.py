@@ -113,26 +113,26 @@ def draw():
         h.draw()
     for i in horses:
         i.draw()
-    if nowTurn=='bean':
-        if time==15:
-            bean15.draw(300,500)
-        elif time==14:
-            bean14.draw(300,500)
-        elif time==13:
-            bean13.draw(300,500)
-        elif time == 12:
-            bean12.draw(300, 500)
-        elif time == 11:
-            bean11.draw(300,500)
-        elif time == 10:
-            bean10.draw(300,500)
+#    if nowTurn=='bean':
+ #       if time==15:
+  #          bean15.draw(300,500)
+   #     elif time==14:
+    #        bean14.draw(300,500)
+     #   elif time==13:
+      #      bean13.draw(300,500)
+       # elif time == 12:
+        #    bean12.draw(300, 500)
+        #elif time == 11:
+         #   bean11.draw(300,500)
+        #elif time == 10:
+         #   bean10.draw(300,500)
 
     update_canvas()
 
 def startTimer():
     global time, nowTurn
     time-=1
-    timer = threading.Timer(1, startTimer)
+    timer = threading.Timer(15, startTimer)
     timer.start()
     if time==0:
         timer.cancel()
