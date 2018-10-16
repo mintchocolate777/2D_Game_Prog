@@ -8,7 +8,7 @@ nowTurn='bean'
 board=[[0]*8 for i in range(8)]
 for i in range(8):
     for j in range(8):
-        board[i][j]='none'  # 돌 중복해서 놓지 못하게
+        board[i][j]='None'  # 돌 중복해서 놓지 못하게
 
 ran_list = [0,1,2,5,6,7]
 time=15
@@ -39,7 +39,10 @@ class Horse:
         Horse.image.clip_draw(self.frame*57,0,57,57,self.x*58+195,self.y*58+55)
 
     def update(self):
-        pass
+        if board[self.y][self.x]=='bean':
+            self.frame=0
+        else:
+            self.frame=3
 
 class Hurdle:
     global board
@@ -73,16 +76,12 @@ def handle_events():
                 for j in range(8):
                     if ty>=(j-1)*58+55+29 and ty<j*58+55+29:
                         y=j
-                if x<=7 and x>=0 and y<=7 and y>=0 and board[y][x]=='none':
+                if x<=7 and x>=0 and y<=7 and y>=0 and board[y][x]=='None':
                     horses.append(Horse(x, y))
+                    reverse(x, y)
                     timer.cancel()
-                    time=15
+                    time = 15
                     startTimer()
-                    if nowTurn=='bean':
-                        nowTurn='chick'
-                    else:
-                        nowTurn='bean'
-
 
 
 def enter():
@@ -143,6 +142,95 @@ def startTimer():
             nowTurn='bean'
         startTimer()
 
+def reverse(x,y):
+    global nowTurn, board
+    reversed =0
+    reversible = checkReverse(x,y)
+    if reversible==0:
+        return 0
+    board[y][x]=nowTurn
+    if reversible&1:
+        j=y-1
+        while board[j][x]!=nowTurn and board[j][x]!='None' and board[j][x]!='hurdle':
+            board[j][x]=nowTurn
+            reversed+=1
+            j-=1
+    reversible>>=1
+
+    if reversible&1:
+        j=y+1
+        while board[j][x] != nowTurn and board[j][x] != 'None' and board[j][x] != 'hurdle':
+            board[j][x]=nowTurn
+            reversed+=1
+            j+=1
+    reversible>>=1
+
+    if reversible&1:
+        i=x-1
+        while board[y][i] != nowTurn and board[y][i] != 'None' and board[y][i] != 'hurdle':
+            board[y][i]=nowTurn
+            reversed+=1
+            i-=1
+    reversible>>=1
+
+    if reversible & 1:
+        i = x + 1
+        while board[y][i] != nowTurn and board[y][i] != 'None' and board[y][i] != 'hurdle':
+            board[y][i] = nowTurn
+            reversed += 1
+            i += 1
+    reversible >>= 1
+
+    if reversible&1:
+        i=x-1
+        j=y-1
+        while board[j][i] != nowTurn and board[j][i] != 'None' and board[j][i] != 'hurdle':
+            board[j][i] = nowTurn
+            reversed += 1
+            i -= 1
+            j-=1
+    reversible>>=1
+
+    if reversible&1:
+        i=x+1
+        j=y-1
+        while board[j][i] != nowTurn and board[j][i] != 'None' and board[j][i] != 'hurdle':
+            board[j][i] = nowTurn
+            reversed += 1
+            i += 1
+            j-=1
+    reversible>>=1
+
+    if reversible&1:
+        i=x-1
+        j=y+1
+        while board[j][i] != nowTurn and board[j][i] != 'None' and board[j][i] != 'hurdle':
+            board[j][i] = nowTurn
+            reversed += 1
+            i -= 1
+            j+=1
+    reversible>>=1
+
+    if reversible&1:
+        i=x+1
+        j=y+1
+        while board[j][i] != nowTurn and board[j][i] != 'None' and board[j][i] != 'hurdle':
+            board[j][i] = nowTurn
+            reversed += 1
+            i += 1
+            j+=1
+    reversible>>=1
+
+    if nowTurn=='bean':
+        nowTurn='chick'
+    else:
+        nowTurn='bean'
+    for i in range(0,8,1):
+        for j in range(0,8,1):
+            if checkReverse(i,j):
+                return reversed
+    return -1
+
 def loadTimeImage():
     global timeImage, timeImage2
     timeImage=[]
@@ -168,9 +256,95 @@ def loadTimeImage():
     timeImage2.append(load_image('닭8.png'))
     timeImage2.append(load_image('닭9.png'))
 
+def checkReverse(x, y):
+    global board, nowTurn
+    result=0
+    #남쪽 체크
+    if y>1 and board[y-1][x]!=nowTurn and board[y-1][x]!='hurdle':
+        for j in range(y-2,-1,-1):
+            if board[j][x]==nowTurn:
+                result+=1
+                break
+            if board[j][x]=='None' or board[j][x]=='hurdle':
+                break
+    #북쪽 체크
+    if y<6 and board[y+1][x]!=nowTurn and board[y+1][x]!='hurdle':
+        for j in range(y+2,8,1):
+            if board[j][x]==nowTurn:
+                result+=2
+                break
+            if board[j][x] == 'None' or board[j][x] == 'hurdle':
+                break
+    #서쪽 체크
+    if x>1 and board[y][x-1]!=nowTurn and board[y][x-1]!='hurdle':
+        for i in range(x-2,-1,-1):
+            if board[y][i]==nowTurn:
+                result+=4
+                break
+            if board[y][i]=='None' or board[y][i] =='hurdle':
+                break
+    #동쪽 체크
+    if x<6 and board[y][x+1]!=nowTurn and board[y][x+1]!='hurdle':
+        for i in range(x+2, 8, 1):
+            if board[y][i]==nowTurn:
+                result+=8
+                break
+            if board[y][i]=='None' or board[y][i]=='hurdle':
+                break
+    #
+    if x>1 and y>1 and board[y-1][x-1]!=nowTurn and board[y-1][x-1]!='hurdle':
+        i=x-2
+        j=y-2
+        while i>=0 and j>=0:
+            if board[j][i]==nowTurn:
+                result+=16
+                break
+            if board[j][i]=='None' or board[j][i]=='hurdle':
+                break
+            i-=1
+            j-=1
+    #
+    if x<6 and y>1 and board[y-1][x+1]!=nowTurn and board[y-1][x+1]!='hurdle':
+        i=x+2
+        j=y-2
+        while i<8 and j>=0:
+            if board[j][i]==nowTurn:
+                result+=32
+                break
+            if board[j][i]=='None' or board[j][i]=='hurdle':
+                break
+            i+=1
+            j-=1
+    #
+    if x>1 and y<6 and board[y+1][x-1]!=nowTurn and board[y+1][x-1]!='hurdle':
+        i=x-2
+        j=y+2
+        while i>=0 and j<8:
+            if board[j][i]==nowTurn:
+                result+=64
+                break
+            if board[j][i]=='None' or board[j][i]=='hurdle':
+                break
+            i-=1
+            j+=1
+    #
+    if x<6 and y<6 and board[y+1][x+1]!=nowTurn and board[y+1][x+1]!='hurdle':
+        i=x+2
+        j=y+2
+        while i<8 and j<8:
+            if board[j][i]==nowTurn:
+                result+=128
+                break
+            if board[j][i]=='None' or board[j][i]=='hurdle':
+                break
+            i+=1
+            j+=1
+    return result
 
 def update():
-    pass
+    global horses
+    for i in horses:
+        i.update()
 
 def exit():
     pass
