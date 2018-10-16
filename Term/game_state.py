@@ -55,7 +55,7 @@ class Hurdle:
         pass
 
 def handle_events():
-    global horses, nowTurn, board, time
+    global horses, nowTurn, board, time, timer
     events = get_events()
     for e in events:
         if e.type == SDL_QUIT:
@@ -75,6 +75,7 @@ def handle_events():
                         y=j
                 if x<=7 and x>=0 and y<=7 and y>=0 and board[y][x]=='none':
                     horses.append(Horse(x, y))
+                    timer.cancel()
                     time=15
                     startTimer()
                     if nowTurn=='bean':
@@ -86,6 +87,7 @@ def handle_events():
 
 def enter():
     global map, hurdles, horses, nowTurn, board
+    loadTimeImage()
     map=Map()
     #장애물 생성
     hurdles = []
@@ -106,35 +108,33 @@ def enter():
     startTimer()
 
 def draw():
-    global map, hurdles, horses, nowTurn
+    global map, hurdles, horses, nowTurn, timeImage, timeImage2
     clear_canvas()
     map.draw()
     for h in hurdles:
         h.draw()
     for i in horses:
         i.draw()
-#    if nowTurn=='bean':
- #       if time==15:
-  #          bean15.draw(300,500)
-   #     elif time==14:
-    #        bean14.draw(300,500)
-     #   elif time==13:
-      #      bean13.draw(300,500)
-       # elif time == 12:
-        #    bean12.draw(300, 500)
-        #elif time == 11:
-         #   bean11.draw(300,500)
-        #elif time == 10:
-         #   bean10.draw(300,500)
-
+    if nowTurn=='bean':
+        timeImage[time%10].draw(413,542)
+        if time>=10:
+            timeImage[1].draw(383,542)
+        else:
+            timeImage[0].draw(383,542)
+    else:
+        timeImage2[time % 10].draw(413, 542)
+        if time >= 10:
+            timeImage2[1].draw(383, 542)
+        else:
+            timeImage2[0].draw(383, 542)
     update_canvas()
 
 def startTimer():
-    global time, nowTurn
+    global time, nowTurn, timer
     time-=1
-    timer = threading.Timer(15, startTimer)
+    timer = threading.Timer(1, startTimer)
     timer.start()
-    if time==0:
+    if time==-1:
         timer.cancel()
         time=15
         if nowTurn=='bean':
@@ -142,6 +142,32 @@ def startTimer():
         else:
             nowTurn='bean'
         startTimer()
+
+def loadTimeImage():
+    global timeImage, timeImage2
+    timeImage=[]
+    timeImage.append(load_image('콩0.png'))
+    timeImage.append(load_image('콩1.png'))
+    timeImage.append(load_image('콩2.png'))
+    timeImage.append(load_image('콩3.png'))
+    timeImage.append(load_image('콩4.png'))
+    timeImage.append(load_image('콩5.png'))
+    timeImage.append(load_image('콩6.png'))
+    timeImage.append(load_image('콩7.png'))
+    timeImage.append(load_image('콩8.png'))
+    timeImage.append(load_image('콩9.png'))
+    timeImage2=[]
+    timeImage2.append(load_image('닭0.png'))
+    timeImage2.append(load_image('닭1.png'))
+    timeImage2.append(load_image('닭2.png'))
+    timeImage2.append(load_image('닭3.png'))
+    timeImage2.append(load_image('닭4.png'))
+    timeImage2.append(load_image('닭5.png'))
+    timeImage2.append(load_image('닭6.png'))
+    timeImage2.append(load_image('닭7.png'))
+    timeImage2.append(load_image('닭8.png'))
+    timeImage2.append(load_image('닭9.png'))
+
 
 def update():
     pass
