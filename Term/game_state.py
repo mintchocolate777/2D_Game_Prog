@@ -148,18 +148,20 @@ def draw():
     update_canvas()
 
 def startTimer():
-    global time, nowTurn, timer
+    global time, nowTurn, timer, guide
     time-=1
     timer = threading.Timer(1, startTimer)
     timer.start()
     if time==-1:
         timer.cancel()
+        guide =[]
         time=15
         if nowTurn=='bean':
             nowTurn='chick'
         else:
             nowTurn='bean'
         startTimer()
+        guidefunc()
 
 def reverse(x,y):
     global nowTurn, board
