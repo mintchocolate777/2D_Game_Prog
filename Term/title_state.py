@@ -3,12 +3,17 @@ import game_framework
 import game_state
 
 def enter():
-    global image
+    global image, bgm
     image = load_image('title.png')
+    bgm=load_music('title_music.mp3')
+    bgm.set_volume(70)
+    bgm.repeat_play()
+
 
 def exit():
-    global image
+    global image, bgm
     del(image)
+    del(bgm)
 
 def draw():
     clear_canvas()
