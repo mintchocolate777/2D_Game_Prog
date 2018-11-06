@@ -27,6 +27,8 @@ class Map:
 class Horse:
     global board
     image=None
+    put_sound=None
+    rev_sound=None
     def __init__(self,x,y):
         if nowTurn=='bean':
             self.frame=0
@@ -37,16 +39,28 @@ class Horse:
         self.x=x
         self.y=y
         board[self.y][self.x]=nowTurn
+        if Horse.put_sound==None:
+            Horse.put_sound=load_music('put stone.MP3')
+            Horse.put_sound.set_volume(100)
+        if Horse.rev_sound==None:
+            Horse.rev_sound=load_music('reverse.MP3')
+            Horse.rev_sound.set_volume(100)
+        if gameStatus=='Run':
+            self.put_sound.play()
 
     def draw(self):
         Horse.image.clip_draw(self.frame*57,0,57,57,self.x*58+195,self.y*58+55)
 
     def update(self):
         if board[self.y][self.x]=='bean'and self.frame!=0:
+            if self.frame==3:
+                self.rev_sound.play()
             self.frame+=1
             self.frame=self.frame%6
             delay(0.03)
         elif board[self.y][self.x]=='chick' and self.frame!=3:
+            if self.frame == 0:
+                self.rev_sound.play()
             self.frame+=1
             self.frame=self.frame%6
             delay(0.03)
@@ -108,28 +122,33 @@ def handle_events():
 
 
 def enter():
-    global map, hurdles, horses, nowTurn, board, guide
+    global map, bgm2, hurdles, horses, guide, nowTurn
+
+    bgm2 = load_music('game_music.mp3')
+    bgm2.set_volume(10)
+    bgm2.repeat_play()
+
+    hurdles=[]
+    horses=[]
+    guide=[]
     loadTimeImage()
     map=Map()
-    #장애물 생성
-    hurdles = []
-    hurdles.append(Hurdle(ran_list[random.randint(0,5)], ran_list[random.randint(0,5)]))
-    hurdles.append(Hurdle(ran_list[random.randint(0,5)], ran_list[random.randint(0,5)]))
-    hurdles.append(Hurdle(ran_list[random.randint(0,5)], ran_list[random.randint(0,5)]))
-    hurdles.append(Hurdle(ran_list[random.randint(0,5)], ran_list[random.randint(0,5)]))
-    hurdles.append(Hurdle(ran_list[random.randint(0,5)], ran_list[random.randint(0,5)]))
-
-    #말 중앙 좌표에 놓기
-    horses = []
-    horses.append(Horse(3, 3))
-    horses.append(Horse(4, 4))
-    nowTurn='chick'
-    horses.append(Horse(3, 4))
-    horses.append(Horse(4, 3))
-    nowTurn='bean'
-    guide=[]
     readyTimer()
     startTimer()
+    # 장애물 생성
+    hurdles.append(Hurdle(ran_list[random.randint(0, 5)], ran_list[random.randint(0, 5)]))
+    hurdles.append(Hurdle(ran_list[random.randint(0, 5)], ran_list[random.randint(0, 5)]))
+    hurdles.append(Hurdle(ran_list[random.randint(0, 5)], ran_list[random.randint(0, 5)]))
+    hurdles.append(Hurdle(ran_list[random.randint(0, 5)], ran_list[random.randint(0, 5)]))
+    hurdles.append(Hurdle(ran_list[random.randint(0, 5)], ran_list[random.randint(0, 5)]))
+
+    # 말 중앙 좌표에 놓기
+    horses.append(Horse(3, 3))
+    horses.append(Horse(4, 4))
+    nowTurn = 'chick'
+    horses.append(Horse(3, 4))
+    horses.append(Horse(4, 3))
+    nowTurn = 'bean'
     guidefunc()
 
 def draw():
