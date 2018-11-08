@@ -82,12 +82,22 @@ class Guide:
     image=None
     def __init__(self, x, y):
         self.x, self.y = x, y
+        self.frame=0
         if Guide.image == None:
             Guide.image = load_image('guide.png')
     def draw(self):
-        Guide.image.draw(self.x * 58 + 195, self.y * 58 + 55)
+        Guide.image.clip_draw(self.frame*57,0,57,57,self.x * 58 + 195, self.y * 58 + 55)
     def update(self):
         pass
+
+def guideTimer():
+    global guide
+    if gameStatus=='Run':
+        gtimer=threading.Timer(0.5, guideTimer)
+        gtimer.start()
+        for g in guide:
+            g.frame += 1
+            g.frame = g.frame % 4
 
 def handle_events():
     global horses, nowTurn, board, time, timer, guide, gameStatus
@@ -122,7 +132,7 @@ def handle_events():
 
 
 def enter():
-    global map, bgm2, hurdles, horses, guide, nowTurn
+    global map, bgm2, hurdles, horses, guide, nowTurn, kittystate
 
     bgm2 = load_music('game_music.mp3')
     bgm2.set_volume(10)
@@ -132,9 +142,10 @@ def enter():
     horses=[]
     guide=[]
     loadTimeImage()
+    loadKittyImage()
+    kittystate=0
     map=Map()
     readyTimer()
-    startTimer()
     # 장애물 생성
     hurdles.append(Hurdle(ran_list[random.randint(0, 5)], ran_list[random.randint(0, 5)]))
     hurdles.append(Hurdle(ran_list[random.randint(0, 5)], ran_list[random.randint(0, 5)]))
@@ -152,7 +163,7 @@ def enter():
     guidefunc()
 
 def draw():
-    global map, hurdles, horses, nowTurn, timeImage, timeImage2, timeImage3, guide, beanImage, chickImage, winImage
+    global map, hurdles, horses, nowTurn, timeImage, timeImage2, timeImage3, guide, beanImage, chickImage, winImage, kittyImage,kittyImage2, kittystate
     clear_canvas()
     map.draw()
     if gameStatus!='Ready':
@@ -174,6 +185,8 @@ def draw():
                 timeImage2[0].draw(383, 542)
         for g in guide:
             g.draw()
+    kittyImage.clip_draw(kittystate*56,0,56,71,80,150)
+    kittyImage2.clip_draw(kittystate * 56, 0, 56, 71, 720, 150)
     if rtime>-1:
         timeImage3[rtime].draw(400,300)
     if gameStatus=='End':
@@ -218,6 +231,11 @@ def loadTimeImage():
     beanImage = load_image('bean.png')
     chickImage=load_image('chick.png')
     winImage = load_image('win.png')
+
+def loadKittyImage():
+    global kittyImage, kittyImage2
+    kittyImage=load_image('leftkitty.png')
+    kittyImage2 = load_image('rightkitty.png')
 
 def checkReverse(x, y):
     global board
@@ -653,6 +671,14 @@ def totalTimer():
             gameStatus='End'
             ttimer.cancel()
 
+def kittyTimer():
+    global kittystate
+    if gameStatus=='Run':
+        kittystate+=1
+        kittystate=kittystate%4
+        ktimer=threading.Timer(0.5,kittyTimer)
+        ktimer.start()
+
 def readyTimer():
     global gameStatus, rtime
     rtime-=1
@@ -662,6 +688,8 @@ def readyTimer():
         gameStatus = 'Run'
         totalTimer()
         startTimer()
+        guideTimer()
+        kittyTimer()
         if rtime==-1:
             readytimer.cancel()
 
