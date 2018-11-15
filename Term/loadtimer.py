@@ -2,6 +2,7 @@ import threading
 import game_world
 import guide
 import game_state
+import checkover
 
 time=16
 ttime=900
@@ -51,4 +52,6 @@ def startTimer():
             game_world.clear_layer(game_world.layer_guide)
             time=16
             startTimer()
+            if checkover.checkOver() == False:
+                gameStatus = 'End'
             guide.guidefunc()
