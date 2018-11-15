@@ -13,6 +13,10 @@ import checkover
 nowTurn='bean'
 gameStatus = 'Ready'
 
+button1=0
+button2=0
+button3=0
+
 board=[[0]*8 for i in range(8)]
 for i in range(8):
     for j in range(8):
@@ -45,16 +49,42 @@ class Hurdle:
         pass
 
 def handle_events():
-    global nowTurn, board, gameStatus
+    global nowTurn, board, gameStatus, button1, button2, button3
     events = get_events()
     for e in events:
         if e.type == SDL_QUIT:
             game_framework.quit()
         elif e.type == SDL_KEYDOWN:
             if e.key == SDLK_ESCAPE:
-                game_framework.quit()
+                gameStatus='Pause'
+        elif e.type == SDL_MOUSEMOTION:
+            if gameStatus=='Pause':
+                tx, ty= e.x, 600-e.y
+                if tx>330 and tx<470 and ty>310 and ty<350 and button1==0:
+                    button1=1
+                    button.play()
+                elif tx<=330 or tx>=470 or ty<=310 or ty>=350:
+                    button1=0
+                if tx>340 and tx<460 and ty>255 and ty<295 and button2==0:
+                    button2 = 1
+                    button.play()
+                elif tx<=340 or tx>=460 or ty<=255 or ty>=295:
+                    button2 = 0
+                if tx > 363 and tx < 437 and ty > 200 and ty < 240 and button3==0:
+                    button3 = 1
+                    button.play()
+                elif tx <= 363 or tx >= 437 or ty <= 200 or ty >= 240:
+                    button3 = 0
         elif e.type == SDL_MOUSEBUTTONDOWN:
-            if e.button == SDL_BUTTON_LEFT and gameStatus=='Run':
+            if e.button == SDL_BUTTON_LEFT and gameStatus=='Pause':
+                tx, ty = e.x, 600 - e.y
+                if tx>330 and tx<470 and ty>310 and ty<350:
+                    gameStatus='Run'
+                if tx>340 and tx<460 and ty>255 and ty<295:
+                    initAll()
+                if tx > 363 and tx < 437 and ty > 200 and ty < 240:
+                    game_framework.quit()
+            elif e.button == SDL_BUTTON_LEFT and gameStatus=='Run':
                 tx, ty = e.x, 600 - e.y
                 x, y= -1, -1
                 for i in range(8):
@@ -76,11 +106,13 @@ def handle_events():
                         guide.guidefunc()
 
 def enter():
-    global bgm2, nowTurn
+    global bgm2, nowTurn, button
 
     bgm2 = load_music('game_music.mp3')
-    bgm2.set_volume(10)
+    bgm2.set_volume(100)
     bgm2.repeat_play()
+    button = load_wav('button.wav')
+    button.set_volume(100)
     imageloader.loadImage()
     loadtimer.readyTimer()
     # 보드 그리기
@@ -110,6 +142,38 @@ def update():
 
 def exit():
     pass
+
+def initAll():
+    global nowTurn, board, gameStatus
+    loadtimer.ttimer.cancel()
+    loadtimer.ktimer.cancel()
+    loadtimer.readytimer.cancel()
+    loadtimer.timer.cancel()
+    game_world.clear_layer(game_world.layer_guide)
+    game_world.clear_layer(game_world.layer_horse)
+    game_world.clear_layer(game_world.layer_hurdle)
+    bgm2.repeat_play()
+    gameStatus='Ready'
+    loadtimer.time = 16
+    loadtimer.ttime = 900
+    loadtimer.rtime = 4
+    loadtimer.kittystate = 0
+    loadtimer.readyTimer()
+    for i in range(8):
+        for j in range(8):
+            board[i][j] = 'None'  # 돌 중복해서 놓지 못하게
+    # 장애물 생성
+    for i in range(5):
+        game_world.add_object(Hurdle(ran_list[random.randint(0, 5)], ran_list[random.randint(0, 5)]),
+                              game_world.layer_hurdle)
+    # 말 중앙 좌표에 놓기
+    nowTurn = 'chick'
+    game_world.add_object(Horse(3, 4), game_world.layer_horse)
+    game_world.add_object(Horse(4, 3), game_world.layer_horse)
+    nowTurn = 'bean'
+    game_world.add_object(Horse(3, 3), game_world.layer_horse)
+    game_world.add_object(Horse(4, 4), game_world.layer_horse)
+    guide.guidefunc()
 
 if __name__=='__main__':
      import sys 

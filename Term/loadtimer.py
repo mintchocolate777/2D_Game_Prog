@@ -9,7 +9,7 @@ rtime=4
 kittystate = 0
 
 def totalTimer():
-    global ttime, timer
+    global ttime, timer, ttimer
     if game_state.gameStatus=='Run':
         ttime-=1
         ttimer = threading.Timer(1, totalTimer)
@@ -19,7 +19,7 @@ def totalTimer():
             ttimer.cancel()
 
 def kittyTimer():
-    global kittystate
+    global kittystate, ktimer
     if game_state.gameStatus=='Run':
         kittystate+=1
         kittystate=kittystate%4
@@ -27,7 +27,7 @@ def kittyTimer():
         ktimer.start()
 
 def readyTimer():
-    global rtime
+    global rtime, readytimer
     rtime-=1
     readytimer = threading.Timer(1,readyTimer)
     readytimer.start()

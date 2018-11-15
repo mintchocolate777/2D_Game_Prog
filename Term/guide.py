@@ -14,8 +14,9 @@ class Guide:
         if game_state.gameStatus != 'Ready':
             Guide.image.clip_draw(self.frame*57,0,57,57,self.x * 58 + 195, self.y * 58 + 55)
     def update(self):
-        self.frame += 1
-        self.frame = self.frame % 4
+        if game_state.gameStatus=='Run':
+            self.frame += 1
+            self.frame = self.frame % 4
 
 
 def guidefunc():

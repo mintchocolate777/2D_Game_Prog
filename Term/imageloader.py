@@ -5,6 +5,7 @@ import checkover
 
 def loadImage():
     global timeImage, timeImage2, timeImage3, beanImage, chickImage, winImage, kittyImage, kittyImage2
+    global pauseImage, quitImage, restartImage, continueImage
     timeImage=[]
     timeImage.append(load_image('콩0.png'))
     timeImage.append(load_image('콩1.png'))
@@ -39,6 +40,17 @@ def loadImage():
     kittyImage=load_image('leftkitty.png')
     kittyImage2 = load_image('rightkitty.png')
 
+    pauseImage = load_image('pause.png')
+    quitImage=[]
+    quitImage.append(load_image('quit.png'))
+    quitImage.append(load_image('quit2.png'))
+    restartImage=[]
+    restartImage.append(load_image('restart.png'))
+    restartImage.append(load_image('restart2.png'))
+    continueImage=[]
+    continueImage.append(load_image('continue.png'))
+    continueImage.append(load_image('continue2.png'))
+
 def draw():
     if game_state.gameStatus!='Ready':
         if game_state.nowTurn=='bean':
@@ -63,3 +75,8 @@ def draw():
             beanImage.draw(400,200)
         else:
             chickImage.draw(400,200)
+    if game_state.gameStatus=='Pause':
+        pauseImage.draw(400,300)
+        continueImage[game_state.button1].draw(400,330)
+        restartImage[game_state.button2].draw(400, 275)
+        quitImage[game_state.button3].draw(400,220)
