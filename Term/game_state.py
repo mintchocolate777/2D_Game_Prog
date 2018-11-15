@@ -105,6 +105,13 @@ def handle_events():
                         game_world.clear_layer(game_world.layer_guide)
                         guide.guidefunc()
 
+def randompos():
+    ranNum = random.randint(0,len(game_world.objects[game_world.layer_guide])-1)
+    randX = game_world.objects[game_world.layer_guide][ranNum].x
+    randY = game_world.objects[game_world.layer_guide][ranNum].y
+    game_world.add_object(Horse(randX, randY), game_world.layer_horse)
+    reverse.reverse(randX, randY)
+
 def enter():
     global bgm2, nowTurn, button
 

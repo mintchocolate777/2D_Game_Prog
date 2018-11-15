@@ -47,11 +47,8 @@ def startTimer():
         timer.start()
         if time==0:
             timer.cancel()
+            game_state.randompos()
             game_world.clear_layer(game_world.layer_guide)
             time=16
-            if game_state.nowTurn=='bean':
-                game_state.nowTurn='chick'
-            else:
-                game_state.nowTurn='bean'
             startTimer()
             guide.guidefunc()
