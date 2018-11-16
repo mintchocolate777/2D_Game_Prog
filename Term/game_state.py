@@ -56,7 +56,8 @@ def handle_events():
             game_framework.quit()
         elif e.type == SDL_KEYDOWN:
             if e.key == SDLK_ESCAPE:
-                gameStatus='Pause'
+                if gameStatus=='Run':
+                    gameStatus='Pause'
         elif e.type == SDL_MOUSEMOTION:
             if gameStatus=='Pause':
                 tx, ty= e.x, 600-e.y
@@ -80,6 +81,9 @@ def handle_events():
                 tx, ty = e.x, 600 - e.y
                 if tx>330 and tx<470 and ty>310 and ty<350:
                     gameStatus='Run'
+                    loadtimer.timer.cancel()
+                    loadtimer.ttimer.cancel()
+                    loadtimer.ktimer.cancel()
                     loadtimer.startTimer()
                     loadtimer.totalTimer()
                     loadtimer.kittyTimer()
