@@ -16,7 +16,7 @@ class Guide:
     def update(self):
         if game_state.gameStatus=='Run':
             self.frame += 1
-            self.frame = self.frame % 4
+            self.frame = self.frame % 9
 
 
 def guidefunc():
