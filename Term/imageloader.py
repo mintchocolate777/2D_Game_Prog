@@ -5,7 +5,7 @@ import checkover
 
 def loadImage():
     global timeImage, timeImage2, timeImage3, beanImage, chickImage, winImage, kittyImage, kittyImage2
-    global pauseImage, quitImage, restartImage, continueImage
+    global pauseImage, quitImage, restartImage, continueImage, timebarImage, hpImage
     timeImage=[]
     timeImage.append(load_image('콩0.png'))
     timeImage.append(load_image('콩1.png'))
@@ -51,6 +51,22 @@ def loadImage():
     continueImage.append(load_image('continue.png'))
     continueImage.append(load_image('continue2.png'))
 
+    timebarImage=[]
+    timebarImage.append(load_image('콩 체력바.png'))
+    timebarImage.append(load_image('닭 체력바.png'))
+
+    hpImage=[]
+    hpImage.append(load_image('hp0.png'))
+    hpImage.append(load_image('hp1.png'))
+    hpImage.append(load_image('hp2.png'))
+    hpImage.append(load_image('hp3.png'))
+    hpImage.append(load_image('hp4.png'))
+    hpImage.append(load_image('hp5.png'))
+    hpImage.append(load_image('hp6.png'))
+    hpImage.append(load_image('hp7.png'))
+    hpImage.append(load_image('hp8.png'))
+    hpImage.append(load_image('hp9.png'))
+
 def draw():
     if game_state.gameStatus!='Ready':
         if game_state.nowTurn=='bean':
@@ -67,6 +83,28 @@ def draw():
                 timeImage2[0].draw(383, 542)
         kittyImage.clip_draw(loadtimer.kittystate*56,0,56,71,80,150)
         kittyImage2.clip_draw(loadtimer.kittystate * 56, 0, 56, 71, 720, 150)
+        timebarImage[0].clip_draw_to_origin(0,0, (int)(328*game_state.beanHp/10000), 27, 26+(int)(328*(10000-game_state.beanHp)/10000), 529)
+        timebarImage[1].clip_draw_to_origin(0,0,(int)(328*game_state.chickHp/10000),27,445,529)
+        if game_state.beanHp>=10000:
+            hpImage[1].draw(43,467)
+        if game_state.beanHp>=1000:
+            hpImage[(int)((game_state.beanHp%10000)/1000)].draw(63,467)
+        if game_state.beanHp>=100:
+            hpImage[(int)((game_state.beanHp%1000)/100)].draw(83,467)
+        if game_state.beanHp >= 100:
+            hpImage[(int)((game_state.beanHp % 100) / 10)].draw(103, 467)
+        hpImage[game_state.beanHp % 10].draw(123, 467)
+
+        if game_state.chickHp >= 10000:
+            hpImage[1].draw(677, 467)
+        if game_state.chickHp >= 1000:
+            hpImage[(int)((game_state.chickHp % 10000) / 1000)].draw(697, 467)
+        if game_state.chickHp >= 100:
+            hpImage[(int)((game_state.chickHp % 1000) / 100)].draw(717, 467)
+        if game_state.chickHp >= 10:
+            hpImage[(int)((game_state.chickHp % 100) / 10)].draw(737, 467)
+        hpImage[game_state.chickHp % 10].draw(757, 467)
+
     if loadtimer.rtime>-1:
         timeImage3[loadtimer.rtime].draw(400,300)
     if game_state.gameStatus=='End':

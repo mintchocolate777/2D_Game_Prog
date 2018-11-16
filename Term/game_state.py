@@ -17,6 +17,9 @@ button1=0
 button2=0
 button3=0
 
+beanHp=10000
+chickHp=10000
+
 board=[[0]*8 for i in range(8)]
 for i in range(8):
     for j in range(8):
@@ -104,6 +107,7 @@ def handle_events():
                     if reverse.checkReverse(x,y)!=0:
                         game_world.add_object(Horse(x, y),game_world.layer_horse)
                         reverse.reverse(x, y)
+                        reverse.hpSystem()
                         loadtimer.timer.cancel()
                         loadtimer.time = 16
                         loadtimer.startTimer()
@@ -158,7 +162,9 @@ def exit():
     pass
 
 def initAll():
-    global nowTurn, board, gameStatus
+    global nowTurn, board, gameStatus, beanHp, chickHp
+    beanHp = 10000
+    chickHp = 10000
     loadtimer.ttimer.cancel()
     loadtimer.ktimer.cancel()
     loadtimer.readytimer.cancel()

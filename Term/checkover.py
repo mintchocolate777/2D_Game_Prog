@@ -2,6 +2,10 @@ import reverse
 import game_state
 
 def checkOver():
+    if game_state.beanHp<=0:
+        return False
+    elif game_state.chickHp<=0:
+        return False
     for y in range(8):
         for x in range(8):
             reversible = reverse.checkReverse(x, y)
@@ -155,15 +159,7 @@ def checkOver():
     return False
 
 def outcome():
-    beancount=0
-    chickcount=0
-    for i in range(8):
-        for j in range(8):
-            if game_state.board[i][j]=='bean':
-                beancount+=1
-            elif game_state.board[i][j]=='chick':
-                chickcount+=1
-    if beancount>chickcount:
+    if game_state.beanHp>game_state.chickHp:
         return 'bean'
     else:
         return 'chick'

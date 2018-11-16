@@ -1,5 +1,7 @@
 import game_state
 
+damageCount = 0 # hp 감소량을 위한 변수임
+
 def checkReverse(x, y):
     result=0
     #남쪽 체크
@@ -85,6 +87,8 @@ def checkReverse(x, y):
     return result
 
 def reverse(x,y):
+    global damageCount
+    damageCount=0
     reversed =0
     reversible = checkReverse(x,y)
     if reversible==0:
@@ -93,11 +97,12 @@ def reverse(x,y):
         else:
             game_state.nowTurn = 'bean'
         return 0
-        game_state.board[y][x]=game_state.nowTurn
+    game_state.board[y][x]=game_state.nowTurn
     if reversible&1:
         j=y-1
         while game_state.board[j][x]!=game_state.nowTurn and game_state.board[j][x]!='None' and game_state.board[j][x]!='hurdle':
             game_state.board[j][x]=game_state.nowTurn
+            damageCount+=1
             reversed+=1
             j-=1
     reversible>>=1
@@ -106,6 +111,7 @@ def reverse(x,y):
         j=y+1
         while game_state.board[j][x] != game_state.nowTurn and game_state.board[j][x] != 'None' and game_state.board[j][x] != 'hurdle':
             game_state.board[j][x]=game_state.nowTurn
+            damageCount += 1
             reversed+=1
             j+=1
     reversible>>=1
@@ -114,6 +120,7 @@ def reverse(x,y):
         i=x-1
         while game_state.board[y][i] != game_state.nowTurn and game_state.board[y][i] != 'None' and game_state.board[y][i] != 'hurdle':
             game_state.board[y][i]=game_state.nowTurn
+            damageCount += 1
             reversed+=1
             i-=1
     reversible>>=1
@@ -122,6 +129,7 @@ def reverse(x,y):
         i = x + 1
         while game_state.board[y][i] != game_state.nowTurn and game_state.board[y][i] != 'None' and game_state.board[y][i] != 'hurdle':
             game_state.board[y][i] = game_state.nowTurn
+            damageCount += 1
             reversed += 1
             i += 1
     reversible >>= 1
@@ -131,6 +139,7 @@ def reverse(x,y):
         j=y-1
         while game_state.board[j][i] != game_state.nowTurn and game_state.board[j][i] != 'None' and game_state.board[j][i] != 'hurdle':
             game_state.board[j][i] = game_state.nowTurn
+            damageCount += 1
             reversed += 1
             i -= 1
             j-=1
@@ -141,6 +150,7 @@ def reverse(x,y):
         j=y-1
         while game_state.board[j][i] != game_state.nowTurn and game_state.board[j][i] != 'None' and game_state.board[j][i] != 'hurdle':
             game_state.board[j][i] = game_state.nowTurn
+            damageCount += 1
             reversed += 1
             i += 1
             j-=1
@@ -151,6 +161,7 @@ def reverse(x,y):
         j=y+1
         while game_state.board[j][i] != game_state.nowTurn and game_state.board[j][i] != 'None' and game_state.board[j][i] != 'hurdle':
             game_state.board[j][i] = game_state.nowTurn
+            damageCount += 1
             reversed += 1
             i -= 1
             j+=1
@@ -161,6 +172,7 @@ def reverse(x,y):
         j=y+1
         while game_state.board[j][i] != game_state.nowTurn and game_state.board[j][i] != 'None' and game_state.board[j][i] != 'hurdle':
             game_state.board[j][i] = game_state.nowTurn
+            damageCount += 1
             reversed += 1
             i += 1
             j+=1
@@ -175,3 +187,15 @@ def reverse(x,y):
             if checkReverse(i,j):
                 return reversed
     return -1
+
+def hpSystem():
+    global damageCount
+    hpMinus=damageCount*100
+    hpBonusMinus=0
+    for i in range (0,damageCount):
+        hpBonusMinus+=i*10
+    hpMinus+=hpBonusMinus
+    if game_state.nowTurn=='bean':
+        game_state.beanHp-=hpMinus
+    else:
+        game_state.chickHp-=hpMinus

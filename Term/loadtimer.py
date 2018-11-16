@@ -53,5 +53,5 @@ def startTimer():
             time=16
             startTimer()
             if checkover.checkOver() == False:
-                gameStatus = 'End'
+                game_state.gameStatus = 'End'
             guide.guidefunc()
