@@ -80,6 +80,9 @@ def handle_events():
                 tx, ty = e.x, 600 - e.y
                 if tx>330 and tx<470 and ty>310 and ty<350:
                     gameStatus='Run'
+                    loadtimer.startTimer()
+                    loadtimer.totalTimer()
+                    loadtimer.kittyTimer()
                 if tx>340 and tx<460 and ty>255 and ty<295:
                     initAll()
                 if tx > 363 and tx < 437 and ty > 200 and ty < 240:
