@@ -156,6 +156,7 @@ def draw():
     update_canvas()
 
 def update():
+    imageloader.update()
     game_world.update()
 
 def exit():

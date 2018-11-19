@@ -3,6 +3,9 @@ import game_state
 import loadtimer
 import checkover
 
+beanAnimHp=10000
+chickAnimHp=10000
+
 def loadImage():
     global timeImage, timeImage2, timeImage3, beanImage, chickImage, winImage, kittyImage, kittyImage2
     global pauseImage, quitImage, restartImage, continueImage, timebarImage, hpImage
@@ -67,6 +70,13 @@ def loadImage():
     hpImage.append(load_image('hp8.png'))
     hpImage.append(load_image('hp9.png'))
 
+def update():
+    global beanAnimHp, chickAnimHp
+    if game_state.beanHp<beanAnimHp:
+        beanAnimHp-=1
+    if game_state.chickHp<chickAnimHp:
+        chickAnimHp-=1
+
 def draw():
     if game_state.gameStatus!='Ready':
         if game_state.nowTurn=='bean':
@@ -83,8 +93,8 @@ def draw():
                 timeImage2[0].draw(383, 542)
         kittyImage.clip_draw(loadtimer.kittystate*56,0,56,71,80,150)
         kittyImage2.clip_draw(loadtimer.kittystate * 56, 0, 56, 71, 720, 150)
-        timebarImage[0].clip_draw_to_origin(0,0, (int)(328*game_state.beanHp/10000), 27, 26+(int)(328*(10000-game_state.beanHp)/10000), 529)
-        timebarImage[1].clip_draw_to_origin(0,0,(int)(328*game_state.chickHp/10000),27,445,529)
+        timebarImage[0].clip_draw_to_origin(0,0, (int)(328*beanAnimHp/10000), 27, 26+(int)(328*(10000-beanAnimHp)/10000), 529)
+        timebarImage[1].clip_draw_to_origin(0,0,(int)(328*chickAnimHp/10000),27,445,529)
         if game_state.beanHp>=10000:
             hpImage[1].draw(43,467)
         if game_state.beanHp>=1000:
