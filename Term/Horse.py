@@ -25,15 +25,4 @@ class Horse:
             Horse.image.clip_draw(self.frame*57,0,57,57,self.x*58+195,self.y*58+55)
 
     def update(self):
-        if game_state.board[self.y][self.x]=='bean'and self.frame!=0:
-            if self.frame==3:
-                self.rev_sound.play()
-            self.frame+=1
-            self.frame=self.frame%6
-            delay(0.03)
-        elif game_state.board[self.y][self.x]=='chick' and self.frame!=3:
-            if self.frame == 0:
-                self.rev_sound.play()
-            self.frame+=1
-            self.frame=self.frame%6
-            delay(0.03)
+        pass

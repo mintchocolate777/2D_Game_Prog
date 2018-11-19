@@ -156,6 +156,7 @@ def enter():
     game_world.add_object(Horse(4,3),game_world.layer_horse)
     nowTurn = 'bean'
     guide.guidefunc()
+    loadtimer.reverseTimer()
 
 def draw():
     clear_canvas()

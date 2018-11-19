@@ -76,3 +76,20 @@ def guideTimer():
             game_world.objects[game_world.layer_guide][i].frame = game_world.objects[game_world.layer_guide][i].frame % 9
         gtimer=threading.Timer(0.1, guideTimer)
         gtimer.start()
+
+def reverseTimer():
+    global revtimer
+    #if game_state.gameStatus=='Run':
+    for i in range(0,len(game_world.objects[game_world.layer_horse])):
+        if game_state.board[game_world.objects[game_world.layer_horse][i].y][game_world.objects[game_world.layer_horse][i].x]=='bean'and game_world.objects[game_world.layer_horse][i].frame!=0:
+            if game_world.objects[game_world.layer_horse][i].frame==3:
+                game_world.objects[game_world.layer_horse][i].rev_sound.play()
+            game_world.objects[game_world.layer_horse][i].frame+=1
+            game_world.objects[game_world.layer_horse][i].frame=game_world.objects[game_world.layer_horse][i].frame%6
+        elif game_state.board[game_world.objects[game_world.layer_horse][i].y][game_world.objects[game_world.layer_horse][i].x]=='chick' and game_world.objects[game_world.layer_horse][i].frame!=3:
+            if game_world.objects[game_world.layer_horse][i].frame == 0:
+                game_world.objects[game_world.layer_horse][i].rev_sound.play()
+            game_world.objects[game_world.layer_horse][i].frame+=1
+            game_world.objects[game_world.layer_horse][i].frame=game_world.objects[game_world.layer_horse][i].frame%6
+    revtimer=threading.Timer(0.1,reverseTimer)
+    revtimer.start()
