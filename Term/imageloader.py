@@ -8,7 +8,7 @@ chickAnimHp=10000
 
 def loadImage():
     global timeImage, timeImage2, timeImage3, beanImage, chickImage, winImage, kittyImage, kittyImage2
-    global pauseImage, quitImage, restartImage, continueImage, timebarImage, hpImage
+    global pauseImage, quitImage, restartImage, continueImage, timebarImage, hpImage, hitImage
     timeImage=[]
     timeImage.append(load_image('콩0.png'))
     timeImage.append(load_image('콩1.png'))
@@ -70,6 +70,8 @@ def loadImage():
     hpImage.append(load_image('hp8.png'))
     hpImage.append(load_image('hp9.png'))
 
+    hitImage=load_image('hit.png')
+
 def update():
     global beanAnimHp, chickAnimHp
     if game_state.beanHp<beanAnimHp:
@@ -114,6 +116,11 @@ def draw():
         if game_state.chickHp >= 10:
             hpImage[(int)((game_state.chickHp % 100) / 10)].draw(737, 467)
         hpImage[game_state.chickHp % 10].draw(757, 467)
+        if loadtimer.hitstate!=12:
+            if game_state.nowTurn=='chick':
+                hitImage.clip_draw(loadtimer.hitstate*170,0,170,170, 710, 350)
+            else:
+                hitImage.clip_draw(loadtimer.hitstate * 170, 0, 170, 170, 90, 350)
 
     if loadtimer.rtime>-1:
         timeImage3[loadtimer.rtime].draw(400,300)

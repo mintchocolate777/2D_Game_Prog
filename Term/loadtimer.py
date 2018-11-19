@@ -8,6 +8,7 @@ time=16
 ttime=900
 rtime=4
 kittystate = 0
+hitstate=12
 
 def totalTimer():
     global ttime, timer, ttimer
@@ -37,6 +38,7 @@ def readyTimer():
         totalTimer()
         startTimer()
         kittyTimer()
+        guideTimer()
         if rtime==-1:
             readytimer.cancel()
 
@@ -54,4 +56,23 @@ def startTimer():
             startTimer()
             if checkover.checkOver() == False:
                 game_state.gameStatus = 'End'
+            gtimer.cancel()
             guide.guidefunc()
+            guideTimer()
+
+def hitTimer():
+    global hitstate, hittimer
+    hitstate+=1
+    hittimer=threading.Timer(0.05,hitTimer)
+    hittimer.start()
+    if hitstate>=12:
+        hittimer.cancel()
+
+def guideTimer():
+    global gtimer
+    if game_state.gameStatus == 'Run':
+        for i in range(0,len(game_world.objects[game_world.layer_guide])):
+            game_world.objects[game_world.layer_guide][i].frame += 1
+            game_world.objects[game_world.layer_guide][i].frame = game_world.objects[game_world.layer_guide][i].frame % 9
+        gtimer=threading.Timer(0.1, guideTimer)
+        gtimer.start()

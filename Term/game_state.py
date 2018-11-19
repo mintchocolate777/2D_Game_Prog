@@ -61,6 +61,8 @@ def handle_events():
             if e.key == SDLK_ESCAPE:
                 if gameStatus=='Run':
                     gameStatus='Pause'
+                elif gameStatus=='End':
+                    game_framework.quit()
         elif e.type == SDL_MOUSEMOTION:
             if gameStatus=='Pause':
                 tx, ty= e.x, 600-e.y
@@ -87,9 +89,11 @@ def handle_events():
                     loadtimer.timer.cancel()
                     loadtimer.ttimer.cancel()
                     loadtimer.ktimer.cancel()
+                    loadtimer.gtimer.cancel()
                     loadtimer.startTimer()
                     loadtimer.totalTimer()
                     loadtimer.kittyTimer()
+                    loadtimer.guideTimer()
                 if tx>340 and tx<460 and ty>255 and ty<295:
                     initAll()
                 if tx > 363 and tx < 437 and ty > 200 and ty < 240:
@@ -108,13 +112,17 @@ def handle_events():
                         game_world.add_object(Horse(x, y),game_world.layer_horse)
                         reverse.reverse(x, y)
                         reverse.hpSystem()
+                        loadtimer.hitstate=0
+                        loadtimer.hitTimer()
                         loadtimer.timer.cancel()
                         loadtimer.time = 16
                         loadtimer.startTimer()
                         if checkover.checkOver()==False:
                             gameStatus = 'End'
+                        loadtimer.gtimer.cancel()
                         game_world.clear_layer(game_world.layer_guide)
                         guide.guidefunc()
+                        loadtimer.guideTimer()
 
 def randompos():
     ranNum = random.randint(0,len(game_world.objects[game_world.layer_guide])-1)
@@ -127,7 +135,7 @@ def enter():
     global bgm2, nowTurn, button
 
     bgm2 = load_music('game_music.mp3')
-    bgm2.set_volume(100)
+    bgm2.set_volume(10)
     bgm2.repeat_play()
     button = load_wav('button.wav')
     button.set_volume(100)
@@ -166,10 +174,14 @@ def initAll():
     global nowTurn, board, gameStatus, beanHp, chickHp
     beanHp = 10000
     chickHp = 10000
+    loadtimer.hitstate=12
+    imageloader.beanAnimHp = 10000
+    imageloader.chickAnimHp = 10000
     loadtimer.ttimer.cancel()
     loadtimer.ktimer.cancel()
     loadtimer.readytimer.cancel()
     loadtimer.timer.cancel()
+    loadtimer.gtimer.cancel()
     game_world.clear_layer(game_world.layer_guide)
     game_world.clear_layer(game_world.layer_horse)
     game_world.clear_layer(game_world.layer_hurdle)
