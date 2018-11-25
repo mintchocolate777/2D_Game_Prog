@@ -12,7 +12,7 @@ import checkover
 
 nowTurn='bean'
 gameStatus = 'Ready'
-
+mode = 'None'   #ai, 대전 모드 중 선택
 button1=0
 button2=0
 button3=0
