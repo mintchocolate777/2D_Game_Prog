@@ -3,7 +3,7 @@ import game_framework
 import game_state
 
 def enter():
-    global image, bgm, button, buttonwav, bt1state, bt2state, explain, explainstate, bt, bt1, bt2, bt3, bt4
+    global image, bgm, button, buttonwav, bt1state, bt2state, explain, explainstate, bt, bt1, bt2, bt3, bt4, start, startstate
     image = load_image('title.png')
     button = load_image('titlebutton.png')
     bgm=load_music('title_music.mp3')
@@ -32,6 +32,10 @@ def enter():
     bt.append(load_image('bt2.png'))
     bt.append(load_image('bt3.png'))
     bt.append(load_image('bt4.png'))
+    start=[]
+    start.append(load_image('시작1.png'))
+    start.append(load_image('시작2.png'))
+    startstate=-1
     bt1=False
     bt2=False
     bt3=False
@@ -55,25 +59,43 @@ def draw():
         if bt2==True:
             bt[1].draw(632,221)
         if bt3==True and explainstate>0:
-            bt[2].draw(433,254)
+            bt[2].draw(432,254)
         if bt4==True and explainstate<11:
             bt[3].draw(483,254)
+    if startstate >= 0:
+        start[startstate].draw(400,300)
+        if bt1 == True:
+            bt[0].draw(195, 221)
+        if bt2 == True:
+            bt[1].draw(632, 221)
+        if bt4 == True:
+            bt[3].draw(483, 254)
     update_canvas()
 
 def update():
     delay(0.03)
     
 def handle_events():
-    global bt1state, bt2state, explainstate, bt1, bt2, bt3, bt4
+    global bt1state, bt2state, explainstate, bt1, bt2, bt3, bt4, startstate
     events=get_events()
     for event in events:
-        tx, ty = event.x, 600 - event.y
         if event.type ==SDL_QUIT:
             game_framework.quit()
         elif event.type==SDL_KEYDOWN:
-            if event.key == SDLK_ESCAPE:
+            if (event.key == SDLK_SPACE or event.key == SDLK_KP_ENTER) and startstate>=0:
+                if startstate == 0:
+                    game_state.mode = 'AI'
+                elif startstate == 1:
+                    game_state.mode = 'PVP'
+                game_framework.push_state(game_state)
+            elif event.key == SDLK_UP:
+                startstate = 0
+            elif event.key ==SDLK_DOWN:
+                startstate = 1
+            elif event.key == SDLK_ESCAPE:
                 game_framework.quit()
         elif event.type == SDL_MOUSEMOTION:
+            tx, ty = event.x, 600 - event.y
             if tx>=131 and tx<=354 and ty>=32 and ty<=98 and bt1state==0:
                 bt1state=1
                 buttonwav.play()
@@ -84,7 +106,7 @@ def handle_events():
                 buttonwav.play()
             elif tx<452 or tx>674 or ty<32 or ty>98:
                 bt2state=0
-            if explainstate>=0 and explainstate<=11:
+            if (explainstate>=0 and explainstate<=11) or startstate>=0:
                 if tx > 147 and tx < 243 and ty > 211 and ty < 231 and bt1==False:
                     bt1=True
                     buttonwav.play()
@@ -105,12 +127,18 @@ def handle_events():
                     buttonwav.play()
                 elif tx<=461 or tx>=505 or ty<=244 or ty>=264:
                     bt4=False
+            if startstate>=0:
+                if tx>177 and tx<273 and ty>290 and ty<310:
+                    startstate=1
+                elif tx>177 and tx<273 and ty>310 and ty<330:
+                    startstate=0
 
 
         elif event.type == SDL_MOUSEBUTTONDOWN:
+            tx, ty = event.x, 600 - event.y
             if event.button == SDL_BUTTON_LEFT:
                 if tx >= 131 and tx <= 354 and ty >= 32 and ty <= 98:
-                    game_framework.push_state(game_state)
+                    startstate=0
                 if tx>=452 and tx<=674 and ty>=32 and ty<=98:
                     explainstate=0
                 if explainstate>=0 and explainstate<=11:
@@ -122,6 +150,27 @@ def handle_events():
                         explainstate-=1
                     if explainstate < 11 and tx > 461 and tx < 505 and ty > 244 and ty < 264:
                         explainstate+=1
+                if startstate>=0:
+                    if tx>147 and tx<243 and ty>211 and ty<231:
+                        startstate=-1
+                    if tx>610 and tx<654 and ty>211 and ty<231:
+                        if startstate==0:
+                            game_state.mode = 'AI'
+                        elif startstate==1:
+                            game_state.mode = 'PVP'
+                        game_framework.push_state(game_state)
+                    if explainstate < 11 and tx > 461 and tx < 505 and ty > 244 and ty < 264:
+                        if startstate==0:
+                            game_state.mode = 'AI'
+                        elif startstate==1:
+                            game_state.mode = 'PVP'
+                        game_framework.push_state(game_state)
+                    if tx > 177 and tx < 273 and ty > 290 and ty < 310:
+                        game_state.mode = 'PVP'
+                        game_framework.push_state(game_state)
+                    elif tx > 177 and tx < 273 and ty > 310 and ty < 330:
+                        game_state.mode = 'AI'
+                        game_framework.push_state(game_state)
 
 def pause():
     pass
