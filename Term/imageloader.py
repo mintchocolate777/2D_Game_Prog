@@ -7,7 +7,7 @@ beanAnimHp=10000
 chickAnimHp=10000
 
 def loadImage():
-    global timeImage, timeImage2, timeImage3, beanImage, chickImage, winImage, kittyImage, kittyImage2
+    global timeImage, timeImage2, timeImage3, beanImage, chickImage, winImage, loseImage, kittyImage, kittyImage2
     global pauseImage, quitImage, restartImage, continueImage, timebarImage, hpImage, hitImage
     timeImage=[]
     timeImage.append(load_image('콩0.png'))
@@ -40,6 +40,7 @@ def loadImage():
     beanImage = load_image('bean.png')
     chickImage=load_image('chick.png')
     winImage = load_image('win.png')
+    loseImage = load_image('lose.png')
     kittyImage=load_image('leftkitty.png')
     kittyImage2 = load_image('rightkitty.png')
 
@@ -125,11 +126,17 @@ def draw():
     if loadtimer.rtime>-1:
         timeImage3[loadtimer.rtime].draw(400,300)
     if game_state.gameStatus=='End':
-        winImage.draw(400,260)
-        if checkover.outcome()=='bean':
-            beanImage.draw(400,200)
-        else:
-            chickImage.draw(400,200)
+        if game_state.mode=='PVP':
+            winImage.draw(400,260)
+            if checkover.outcome()=='bean':
+                beanImage.draw(400,200)
+            else:
+                chickImage.draw(400,200)
+        elif game_state.mode=='AI':
+            if checkover.outcome()=='bean':
+                winImage.draw(400,300)
+            else:
+                loseImage.draw(400,300)
     if game_state.gameStatus=='Pause':
         pauseImage.draw(400,300)
         continueImage[game_state.button1].draw(400,330)

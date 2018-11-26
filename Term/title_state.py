@@ -82,7 +82,7 @@ def handle_events():
         if event.type ==SDL_QUIT:
             game_framework.quit()
         elif event.type==SDL_KEYDOWN:
-            if (event.key == SDLK_SPACE or event.key == SDLK_KP_ENTER) and startstate>=0:
+            if event.key == SDLK_SPACE and startstate>=0:
                 if startstate == 0:
                     game_state.mode = 'AI'
                 elif startstate == 1:

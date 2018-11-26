@@ -11,8 +11,13 @@ class Guide:
         if Guide.image == None:
             Guide.image = load_image('guide.png')
     def draw(self):
-        if game_state.gameStatus != 'Ready':
-            Guide.image.clip_draw(self.frame*57,0,57,57,self.x * 58 + 195, self.y * 58 + 55)
+        if game_state.mode =='AI':
+            if game_state.nowTurn == 'bean':
+                if game_state.gameStatus != 'Ready':
+                    Guide.image.clip_draw(self.frame*57,0,57,57,self.x * 58 + 195, self.y * 58 + 55)
+        elif game_state.mode =='PVP':
+                if game_state.gameStatus != 'Ready':
+                    Guide.image.clip_draw(self.frame*57,0,57,57,self.x * 58 + 195, self.y * 58 + 55)
     def update(self):
         pass
 

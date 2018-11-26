@@ -3,6 +3,7 @@ import game_world
 import guide
 import game_state
 import checkover
+import reverse
 
 time=16
 ttime=900
@@ -93,3 +94,20 @@ def reverseTimer():
             game_world.objects[game_world.layer_horse][i].frame=game_world.objects[game_world.layer_horse][i].frame%6
     revtimer=threading.Timer(0.1,reverseTimer)
     revtimer.start()
+
+def AI():
+    global time, hitstate
+    if game_state.nowTurn == 'chick' and game_state.gameStatus != 'End' and time == 12:
+        game_state.randompos()
+        reverse.hpSystem()
+        hitstate = 0
+        hitTimer()
+        timer.cancel()
+        time = 16
+        startTimer()
+        if checkover.checkOver() == False:
+            game_state.gameStatus = 'End'
+        gtimer.cancel()
+        game_world.clear_layer(game_world.layer_guide)
+        guide.guidefunc()
+        guideTimer()

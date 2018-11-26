@@ -12,7 +12,7 @@ import checkover
 
 nowTurn='bean'
 gameStatus = 'Ready'
-mode = 'None'   #ai, 대전 모드 중 선택
+
 button1=0
 button2=0
 button3=0
@@ -52,7 +52,7 @@ class Hurdle:
         pass
 
 def handle_events():
-    global nowTurn, board, gameStatus, button1, button2, button3
+    global nowTurn, board, gameStatus, button1, button2, button3, mode
     events = get_events()
     for e in events:
         if e.type == SDL_QUIT:
@@ -107,22 +107,23 @@ def handle_events():
                 for j in range(8):
                     if ty>=(j-1)*58+55+29 and ty<j*58+55+29:
                         y=j
-                if x<=7 and x>=0 and y<=7 and y>=0 and board[y][x]=='None':
-                    if reverse.checkReverse(x,y)!=0:
-                        game_world.add_object(Horse(x, y),game_world.layer_horse)
-                        reverse.reverse(x, y)
-                        reverse.hpSystem()
-                        loadtimer.hitstate=0
-                        loadtimer.hitTimer()
-                        loadtimer.timer.cancel()
-                        loadtimer.time = 16
-                        loadtimer.startTimer()
-                        if checkover.checkOver()==False:
-                            gameStatus = 'End'
-                        loadtimer.gtimer.cancel()
-                        game_world.clear_layer(game_world.layer_guide)
-                        guide.guidefunc()
-                        loadtimer.guideTimer()
+                if (mode=='AI' and nowTurn == 'bean') or mode=='PVP':
+                    if x<=7 and x>=0 and y<=7 and y>=0 and board[y][x]=='None':
+                        if reverse.checkReverse(x,y)!=0:
+                            game_world.add_object(Horse(x, y),game_world.layer_horse)
+                            reverse.reverse(x, y)
+                            reverse.hpSystem()
+                            loadtimer.hitstate=0
+                            loadtimer.hitTimer()
+                            loadtimer.timer.cancel()
+                            loadtimer.time = 16
+                            loadtimer.startTimer()
+                            if checkover.checkOver()==False:
+                                gameStatus = 'End'
+                            loadtimer.gtimer.cancel()
+                            game_world.clear_layer(game_world.layer_guide)
+                            guide.guidefunc()
+                            loadtimer.guideTimer()
 
 def randompos():
     ranNum = random.randint(0,len(game_world.objects[game_world.layer_guide])-1)
@@ -165,6 +166,8 @@ def draw():
     update_canvas()
 
 def update():
+    if mode=='AI':
+        loadtimer.AI()
     imageloader.update()
     game_world.update()
 
