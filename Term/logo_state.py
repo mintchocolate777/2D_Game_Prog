@@ -7,7 +7,7 @@ import time
 def enter():
     global image, startedOn
     startedOn = time.time()
-    image = load_image('kpu_credit.png')
+    image = load_image('image/kpu_credit.png')
 
 
 def exit():

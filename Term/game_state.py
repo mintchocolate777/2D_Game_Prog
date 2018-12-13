@@ -31,7 +31,7 @@ class Map:
     image=None
     def __init__(self):
         if Map.image==None:
-            Map.image=load_image('보오오드.png')
+            Map.image=load_image('image/보오오드.png')
     def draw(self):
         Map.image.draw(400,300)
     def update(self):
@@ -44,7 +44,7 @@ class Hurdle:
         self.x, self.y=x,y
         board[self.y][self.x]='hurdle'
         if Hurdle.image==None:
-            Hurdle.image=load_image('장애물.png')
+            Hurdle.image=load_image('image/장애물.png')
     def draw(self):
         if gameStatus != 'Ready':
             Hurdle.image.draw(self.x*58+195,self.y*58+55)
@@ -135,10 +135,10 @@ def randompos():
 def enter():
     global bgm2, nowTurn, button
 
-    bgm2 = load_music('game_music.mp3')
+    bgm2 = load_music('music/game_music.mp3')
     bgm2.set_volume(10)
     bgm2.repeat_play()
-    button = load_wav('button.wav')
+    button = load_wav('music/button.wav')
     button.set_volume(100)
     imageloader.loadImage()
     loadtimer.readyTimer()
@@ -172,7 +172,17 @@ def update():
     game_world.update()
 
 def exit():
-    pass
+    global bgm2, button
+
+    loadtimer.exit()
+    imageloader.exit()
+    del(Map.image)
+    del(Hurdle.image)
+    del(bgm2)
+    del(button)
+    del(guide.Guide.image)
+    del(Horse.image)
+    del(Horse.rev_sound)
 
 def initAll():
     global nowTurn, board, gameStatus, beanHp, chickHp

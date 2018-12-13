@@ -15,9 +15,9 @@ class Horse:
         self.y=y
         game_state.board[self.y][self.x]=game_state.nowTurn
         if Horse.image==None:
-            Horse.image=load_image('콩닭애니메이션.png')
+            Horse.image=load_image('image/콩닭애니메이션.png')
         if Horse.rev_sound==None:
-            Horse.rev_sound=load_wav('reverse.wav')
+            Horse.rev_sound=load_wav('music/reverse.wav')
             Horse.rev_sound.set_volume(100)
 
     def draw(self):

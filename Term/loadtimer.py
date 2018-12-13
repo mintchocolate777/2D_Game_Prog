@@ -11,6 +11,16 @@ rtime=4
 kittystate = 0
 hitstate=12
 
+def exit():
+    global ttimer, ktimer, readytimer, gtimer, hittimer, timer, revtimer
+    ttimer.cancel()
+    ktimer.cancel()
+    readytimer.cancel()
+    gtimer.cancel()
+    hittimer.cancel()
+    timer.cancel()
+    revtimer.cancel()
+
 def totalTimer():
     global ttime, timer, ttimer
     if game_state.gameStatus=='Run':

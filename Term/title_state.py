@@ -4,48 +4,52 @@ import game_state
 
 def enter():
     global image, bgm, button, buttonwav, bt1state, bt2state, explain, explainstate, bt, bt1, bt2, bt3, bt4, start, startstate
-    image = load_image('title.png')
-    button = load_image('titlebutton.png')
-    bgm=load_music('title_music.mp3')
+    image = load_image('image/title.png')
+    button = load_image('image/titlebutton.png')
+    bgm=load_music('music/title_music.mp3')
     bgm.set_volume(70)
     bgm.repeat_play()
-    buttonwav = load_wav('button.wav')
+    buttonwav = load_wav('music/button.wav')
     buttonwav.set_volume(100)
     bt1state=0
     bt2state=0
     explain=[]
-    explain.append(load_image('설명1.png'))
-    explain.append(load_image('설명2.png'))
-    explain.append(load_image('설명3.png'))
-    explain.append(load_image('설명4.png'))
-    explain.append(load_image('설명5.png'))
-    explain.append(load_image('설명6.png'))
-    explain.append(load_image('설명7.png'))
-    explain.append(load_image('설명8.png'))
-    explain.append(load_image('설명9.png'))
-    explain.append(load_image('설명10.png'))
-    explain.append(load_image('설명11.png'))
-    explain.append(load_image('설명12.png'))
+    explain.append(load_image('image/설명1.png'))
+    explain.append(load_image('image/설명2.png'))
+    explain.append(load_image('image/설명3.png'))
+    explain.append(load_image('image/설명4.png'))
+    explain.append(load_image('image/설명5.png'))
+    explain.append(load_image('image/설명6.png'))
+    explain.append(load_image('image/설명7.png'))
+    explain.append(load_image('image/설명8.png'))
+    explain.append(load_image('image/설명9.png'))
+    explain.append(load_image('image/설명10.png'))
+    explain.append(load_image('image/설명11.png'))
+    explain.append(load_image('image/설명12.png'))
     explainstate=-1
     bt=[]
-    bt.append(load_image('bt1.png'))
-    bt.append(load_image('bt2.png'))
-    bt.append(load_image('bt3.png'))
-    bt.append(load_image('bt4.png'))
+    bt.append(load_image('image/bt1.png'))
+    bt.append(load_image('image/bt2.png'))
+    bt.append(load_image('image/bt3.png'))
+    bt.append(load_image('image/bt4.png'))
     start=[]
-    start.append(load_image('시작1.png'))
-    start.append(load_image('시작2.png'))
+    start.append(load_image('image/시작1.png'))
+    start.append(load_image('image/시작2.png'))
     startstate=-1
     bt1=False
     bt2=False
     bt3=False
     bt4=False
 
-
 def exit():
-    global image, bgm
+    global image, bgm, button, buttonwav, explain, bt, start
     del(image)
     del(bgm)
+    del(button)
+    del(buttonwav)
+    del(explain)
+    del(bt)
+    del(start)
 
 def draw():
     clear_canvas()

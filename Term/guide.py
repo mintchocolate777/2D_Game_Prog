@@ -9,7 +9,7 @@ class Guide:
         self.x, self.y = x, y
         self.frame=0
         if Guide.image == None:
-            Guide.image = load_image('guide.png')
+            Guide.image = load_image('image/guide.png')
     def draw(self):
         if game_state.mode =='AI':
             if game_state.nowTurn == 'bean':
