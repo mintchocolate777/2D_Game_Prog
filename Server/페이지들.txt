@@ -1,0 +1,8 @@
+json 리턴하는 api server program
+https://blog.naver.com/evanecen/221403890451
+
+뭔진 잘 모르겠지만 도움이 될거같은 페이지
+https://soooprmx.com/archives/8737
+
+뭔진 잘 모르겠지만 도움이 될거같은 페이지2
+https://www.bogotobogo.com/python/python_network_programming_server_client.php
