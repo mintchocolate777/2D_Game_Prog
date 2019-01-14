@@ -134,7 +134,6 @@ def randompos():
 
 def enter():
     global bgm2, nowTurn, button
-
     bgm2 = load_music('music/game_music.mp3')
     bgm2.set_volume(10)
     bgm2.repeat_play()
@@ -223,7 +222,7 @@ def initAll():
     guide.guidefunc()
 
 if __name__=='__main__':
-     import sys 
+     import sys
      current_module = sys.modules[__name__]   
      open_canvas() 
      game_framework.run(current_module) 
